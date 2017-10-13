@@ -18,12 +18,14 @@ class fail2ban {
     owner    => 'root',
     content  => template("fail2ban/jail.conf.erb"),
     require  => File['/etc/fail2ban'],
+    notify   => Service['fail2ban'],
   }
 
   service { 'fail2ban' :
     ensure    => running,
     provider  => 'systemd',
-    require   => [File['/etc/fail2ban/jail.conf'], Package['fail2ban']],
+    require   => Package['fail2ban'],
+    subscribe => File['/etc/fail2ban/jail.conf'],
   }
 
 }
