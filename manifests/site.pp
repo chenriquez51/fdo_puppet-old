@@ -17,6 +17,7 @@ node 'dev.fasterdevops.com' {
 
 node 'silver.fasterdevops.com' {
     include resources
+    include fail2ban
 }
 
 

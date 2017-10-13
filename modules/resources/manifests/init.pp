@@ -3,7 +3,7 @@
 #
 class resources {
 
- $base_packages = ['python34', 'git', 'zsh', 'tmux', 'curl', 'whois', 'ntp', 'htop', 'bind-utils']
+ $base_packages = ['python34', 'lsof', 'git', 'zsh', 'tmux', 'curl', 'whois', 'ntp', 'htop', 'bind-utils']
 
   file { '/etc/motd' :
     source    => 'puppet:///modules/resources/motd',
