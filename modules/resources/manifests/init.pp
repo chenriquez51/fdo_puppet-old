@@ -19,14 +19,20 @@ class resources {
 
   file { '/root/.vimrc' :
     source    => 'puppet:///modules/resources/vimrc',
-    mode      => '0655'
+    mode      => '0655',
     owner     => 'root',
   }
 
-  file { '/opt':
+  file { '/opt' :
     ensure    => 'directory',
     mode      => '0655',
-    owner     =>'root',
+    owner     => 'root',
+  }
+
+  exec { 'yum update' :
+    command   => '/usr/bin/yum update -y',
+    user      => 'root',
+    require   => Package[$base_packages],
   }
 
 

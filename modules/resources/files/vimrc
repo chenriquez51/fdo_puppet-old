@@ -1,0 +1,153 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""  Vim Configuration - Azryn Labs
+""  v0.2.0
+""
+""  lgpl v3 - https://www.gnu.org/licenses/lgpl-3.0.txt
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""" Vim-Plug ====================================
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')      " Minimalist Vim Plugin Manager
+
+
+""" Settings ====================================
+
+set nocompatible                       " be iMproved, required
+set nobackup
+set noswapfile
+set termencoding=utf-8                 " UTF8 as default encoding
+set encoding=utf-8                     " ...
+set tabstop=4
+Plug 'tpope/vim-sensible'              " Sensible Defaults
+
+
+""" Input =======================================
+
+set mouse=a                            " Mouse Support
+
+let mapleader = ','
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Use <leader>/ to clear search highlight
+nmap <silent> <leader>/ :nohlsearch<CR>
+
+
+""" Display =====================================
+
+set pastetoggle=<F2>
+set listchars=tab:\|.,trail:.,extends:#,nbsp:.
+
+Plug 'vim-airline/vim-airline'         " Status/Tabline
+
+    let g:airline_left_sep = '»'
+    let g:airline_left_sep = '▶'
+    let g:airline_right_sep = '«'
+    let g:airline_right_sep = '◀'
+
+
+    nmap <F8> :TagbarToggle<CR>
+
+
+""" Utilities ===================================
+
+Plug 'spolu/dwm.vim'                   " Tiled Window Management
+Plug 'Shougo/vimfiler.vim'             " Powerful file explorer
+Plug 'kassio/neoterm'                  " Terminal Wrapper
+Plug 'tpope/vim-eunuch'                " Helpers for UNIX
+Plug 'tpope/vim-dispatch'              " Async Build/Test
+Plug 'mileszs/ack.vim'                 " Enhanced Grepping within Vim
+
+    if executable('ag')
+        let g:ackprg = 'ag --vimgrep'
+    endif
+
+Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
+
+    let g:ctrlp_map = '<c-p>'
+    let g:ctrlp_cmd = 'CtrlP'
+    let g:ctrlp_custom_ignore = {
+      \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+      \ 'file': '\v\.(exe|so|dll)$',
+      \ 'link': 'some_bad_symbolic_links',
+      \ }
+
+    let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+
+Plug 'itchyny/calendar.vim'            " Calendar
+
+    let g:calendar_google_calendar = 1
+    let g:calendar_google_task = 1
+
+"Plug 'FredKSchott/CoVim'               " Collaborative editing
+
+
+""" Languages ===================================
+
+Plug 'sheerun/vim-polyglot'            " Language Support
+
+
+
+"Plug 'davidhalter/jedi-vim'            " Code autocompletion
+""" Editor ======================================
+
+"set list                               " Show whitespace
+set ruler                              " Show line/cursor position
+set number                             " Show line numbers
+set wrap linebreak nolist
+autocmd BufWritePre * %s/\s\+$//e      " Delete trailing whitespace on save
+
+Plug 'tpope/vim-sleuth'                " Heuristically set buffer options
+Plug 'nathanaelkane/vim-indent-guides' " Visaully display indent level
+Plug 'junegunn/vim-easy-align'         " Easier text alignment
+
+    " Start interactive EasyAlign in visual mode (e.g. vipga)
+    xmap ga <Plug>(EasyAlign)
+
+    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+    nmap ga <Plug>(EasyAlign)
+
+Plug 'ervandew/supertab'               " Vim insert mode completions with Tab
+Plug 'tpope/vim-surround'              " Quoting/Parenthesizing made simple
+Plug 'junegunn/limelight.vim'          " Hyperfocus-writing in Vim
+
+if has ('nvim')
+    Plug 'neomake/neomake'             " Async :make
+    Plug 'Shougo/deoplete.nvim'        " Async Completions
+
+        let g:deoplete#enable_at_startup = 1
+endif
+
+
+""" Theme =======================================
+
+try
+  colorscheme mushroom
+  set background=dark
+catch
+endtry
+
+
+""" Version Control System ======================
+
+Plug 'airblade/vim-gitgutter'          " Show git diff in the gutter
+
+    nmap <Leader>ha <Plug>GitGutterStageHunk
+    nmap <Leader>hr <Plug>GitGutterUndoHunk
+
+Plug 'tpope/vim-fugitive'              " Git wrapper
+Plug 'tpope/vim-git'                   " Git integration
+Plug 'mattn/gist-vim'                  " Gist upload (GitHub)
+
+
+call plug#end()
