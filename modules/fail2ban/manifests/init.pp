@@ -7,11 +7,17 @@ class fail2ban {
     provider  => 'yum',
   }
 
+  file { '/etc/fail2ban' :
+    ensure   => directory,
+    owner    => 'root',
+    require  => Package['fail2ban'],
+  }
+
   file { '/etc/fail2ban/jail.conf' :
     ensure   => file,
     owner    => 'root',
     content  => template("fail2ban/jail.conf.erb"),
-    require  => Package['fail2ban'],
+    require  => File['/etc/fail2ban'],
   }
 
   service { 'fail2ban' :
