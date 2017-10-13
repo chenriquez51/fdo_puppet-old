@@ -9,6 +9,7 @@ node 'srv5.riley.science' {    # Specify specific node
 
 node 'srv.fasterdevops.com' {    # Specify specific node
     include resources
+    include fasterdevops
 }
 
 node 'dev.fasterdevops.com' {
