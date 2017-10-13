@@ -1,4 +1,4 @@
-## Class for fasterdevops.com
+## Class for fasterdevops.com website
 #
 ############
 
