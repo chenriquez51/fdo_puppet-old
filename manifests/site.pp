@@ -18,6 +18,8 @@ node 'dev.fasterdevops.com' {
 node 'silver.fasterdevops.com' {
     include resources
 }
+
+
 # Manage users
   user { 'kolby':
     ensure    => present,
@@ -36,9 +38,6 @@ node 'silver.fasterdevops.com' {
 }
 
 
-  exec { 'yum update':
-    command   => '/usr/bin/yum update -y'
-}
 # Add files in /etc/puppetlabs/modules/resources/files/
 
 node default {}
