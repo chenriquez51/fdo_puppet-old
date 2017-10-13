@@ -5,6 +5,8 @@ class resources {
 
  $base_packages = ['python34', 'lsof', 'git', 'zsh', 'tmux', 'curl', 'whois', 'ntp', 'htop', 'bind-utils']
 
+ $python_packages = ['paramiko', 'fabric', 'pep8', 'pylint']
+
   file { '/etc/motd' :
     source    => 'puppet:///modules/resources/motd',
     mode      => '0644',
@@ -29,6 +31,11 @@ class resources {
     owner     => 'root',
   }
 
+  exec { 'install_pip' :
+    command   => '/usr/bin/easy_install pip',
+    user      => 'root',
+  }
+
   exec { 'yum update' :
     command   => '/usr/bin/yum update -y',
     user      => 'root',
@@ -38,5 +45,6 @@ class resources {
 
   package { $base_packages: ensure => latest, provider => 'yum',}
 
+  package { $python_packages: ensure => latest, provider => 'pip', require => Exec['install_pip'],}
 
 }
