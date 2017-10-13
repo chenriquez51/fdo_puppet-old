@@ -1,2 +1,12 @@
 # Puppet repos of riley.science and fasterdevops.com
-A work in progress.
+To use my pre-commit hook, run the following gem install first-
+```
+gem install puppet-lint
+```
+
+
+Current classes:
+```
+resources
+```
+

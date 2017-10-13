@@ -1,0 +1,108 @@
+#!/bin/sh
+
+echo "### Checking puppet syntax, for science! ###"
+for file in $(git diff --name-only --cached | grep -E '\.(pp)')
+do
+    # Only check new/modified files
+    if [ -f "$file" ]
+    then
+        puppet-lint \
+            --no-class_inherits_from_params_class-check \
+            --with-filename $file \
+            --no-140chars-check
+            #--no-documentation-check  \
+            #--no-autoloader_layout-check \
+
+        # Set us up to bail if we receive any syntax errors
+        if [ "$?" -eq '0' ]
+        then
+            echo "$file looks good"
+        fi
+    fi
+done
+echo ""
+
+echo "### Checking if puppet manifests are valid ###"
+# validating the whole manifest takes too long. uncomment this
+# if you want to test the whole shebang.
+# for file in $(find . -name "*.pp")
+# for file in $(git diff --name-only --cached | grep -E '\.(pp|erb)')
+for file in $(git diff --name-only --cached | grep -E '\.(pp)')
+do
+    if [ -f $file ]
+    then
+        puppet parser validate $file
+        if [ "$?" -ne '0' ]
+        then
+            echo "ERROR: puppet parser failed at: $file"
+            syntax_is_bad=1
+        else
+            echo "OK: $file looks valid"
+        fi
+    fi
+done
+echo ""
+
+# Test the .erb template files for syntax errors
+echo "### Testing the syntax of puppet templates ###"
+for file in $(git diff --name-only --cached | grep -E '\.(erb)'); do
+    if [ -f "$file" ]
+    then
+        erb -x -T '-' -P $file | ruby -c > /dev/null
+        if [ "$?" -ne '0' ]
+        then
+            echo "ERROR: ERB check failed at: $file"
+            syntax_is_bad=1
+        else
+            echo "OK: $file looks valid"
+        fi
+    fi
+done
+if [ "$(puppet --version)" == /^4/ ]; then
+    for file in $(git diff --name-only --cached | grep -E '\.(epp)'); do
+        if [ -f "$file" ]; then
+            puppet epp validate $file || syntax_is_bad=1
+        fi
+    done
+fi
+echo ""
+
+# Check shell scripts
+echo "### Checking shell scripts ###"
+for file in $(git diff --name-only --cached) ; do
+    if [ -f "$file" -a "$(head -1 $file 2>/dev/null | grep '/bin/bash' | wc -l)" -eq '1' ]
+    then
+        /bin/bash -n $file
+        if [ "$?" -ne '0' ]
+        then
+            echo "ERROR: Script check failed at: $file"
+            #syntax_is_bad=1
+        else
+            echo "OK: $file looks valid"
+        fi
+    elif [ -f "$file" -a "$(head -1 $file 2>/dev/null | grep '/bin/sh' | wc -l)" -eq '1' ]
+    then
+        /bin/sh -n $file
+        if [ "$?" -ne '0' ]
+        then
+            echo "ERROR: Script check failed at: $file"
+            #syntax_is_bad=1
+        else
+            echo "OK: $file looks valid"
+        fi
+    fi
+done
+echo ""
+
+# Yaml
+echo "### Checking yaml ###"
+find hieradata modules modules_hosts manifests -type f -name '*.yaml' -exec yaml-lint {} 2>&1 | grep -P '\x1b\[3[13]m' && exit 1
+
+if [ "$syntax_is_bad" = "1" ]
+then
+    echo "FATAL: Syntax is bad. See above errors"
+    echo "Bailing"
+    exit 1
+else
+    echo "Everything looks good."
+fi
