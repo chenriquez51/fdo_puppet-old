@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # By Alex Kostyn
-
+## File managed by puppet
 # Starting import section ##
 import sys
 import math
