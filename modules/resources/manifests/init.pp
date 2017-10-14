@@ -45,6 +45,6 @@ class resources {
 
   package { $base_packages: ensure => latest, provider => 'yum',}
 
-  package { $python_packages: ensure => latest, provider => 'pip', require => Exec['install_pip'],}
+  package { $python_packages: ensure => installed, provider => 'pip', require => Exec['install_pip'],}
 
 }
