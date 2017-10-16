@@ -3,7 +3,7 @@
 #
 class resources {
 
- $base_packages = ['python34', 'lsof', 'telnet', 'git', 'zsh', 'tmux', 'curl', 'whois', 'ntp', 'htop', 'bind-utils']
+ $base_packages = hiera(resources::base-packages)
 
  $python_packages = ['paramiko', 'fabric', 'pep8', 'pylint']
 

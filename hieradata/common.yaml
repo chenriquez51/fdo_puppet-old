@@ -1,0 +1,13 @@
+resources::base-packages:
+  - 'python34'
+  - 'telnet'
+  - 'zsh'
+  - 'whois'
+  - 'emacs-erlang'
+  - 'git'
+  - 'tmux'
+  - 'curl'
+  - 'ntp'
+  - 'htop'
+  - 'bind-utils'
+
