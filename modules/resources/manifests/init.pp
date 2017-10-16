@@ -5,7 +5,7 @@ class resources {
 
  $base_packages = hiera(resources::base-packages)
 
- $python_packages = ['paramiko', 'fabric', 'pep8', 'pylint']
+ $python_packages = hiera(resources::python-packages)
 
   file { '/etc/motd' :
     source    => 'puppet:///modules/resources/motd',

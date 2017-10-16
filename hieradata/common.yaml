@@ -11,3 +11,8 @@ resources::base-packages:
   - 'htop'
   - 'bind-utils'
 
+resources::python-packages:
+  - 'paramiko'
+  - 'fabric'
+  - 'pep8'
+  - 'pylint'
