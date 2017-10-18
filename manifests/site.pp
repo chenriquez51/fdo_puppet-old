@@ -25,6 +25,11 @@ node 'silver.fasterdevops.com' {
     }
 }
 
+node 'srv3.riley.science' {
+    require resources
+    include fail2ban
+}
+
 
 
 node default {}
