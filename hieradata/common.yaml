@@ -16,3 +16,4 @@ resources::python-packages:
   - 'fabric'
   - 'pep8'
   - 'pylint'
+  - 'selenium'

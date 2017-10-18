@@ -18,6 +18,11 @@ node 'silver.fasterdevops.com' {
     require resources
     include resources::users
     include fail2ban
+
+    package { 'npm':
+        ensure     => latest,
+        provider   => 'yum',
+    }
 }
 
 
