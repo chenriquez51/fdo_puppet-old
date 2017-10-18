@@ -17,3 +17,4 @@ resources::python-packages:
   - 'pep8'
   - 'pylint'
   - 'selenium'
+  - 'python-digitalocean'
