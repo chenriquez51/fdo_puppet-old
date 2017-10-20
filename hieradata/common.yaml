@@ -18,3 +18,4 @@ resources::python-packages:
   - 'pylint'
   - 'selenium'
   - 'python-digitalocean'
+  - 'tensorflow'
